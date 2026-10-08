@@ -213,34 +213,226 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 });
 </script>
+<!-- KELOLA TAMU -->
+<div id="adminPanel" style="
+display:none;
+position:fixed;
+inset:0;
+background:rgba(0,0,0,.65);
+z-index:99999;
+padding:20px;
+font-family:Arial,sans-serif;
+overflow:auto;
+">
+
+<div style="
+max-width:500px;
+margin:30px auto;
+background:#fff;
+border-radius:20px;
+padding:22px;
+box-shadow:0 10px 40px rgba(0,0,0,.3);
+">
+
+<h2 style="margin-top:0;text-align:center;">
+⚙️ Kelola Tamu
+</h2>
+
+<input id="namaInput"
+type="text"
+placeholder="Nama tamu"
+style="
+width:100%;
+box-sizing:border-box;
+padding:14px;
+margin-bottom:10px;
+border:1px solid #ddd;
+border-radius:10px;
+font-size:16px;
+">
+
+<input id="waInput"
+type="text"
+placeholder="Nomor WhatsApp, contoh 6285345649000"
+style="
+width:100%;
+box-sizing:border-box;
+padding:14px;
+margin-bottom:12px;
+border:1px solid #ddd;
+border-radius:10px;
+font-size:16px;
+">
+
+<button onclick="buatLinkTamu()" style="
+width:100%;
+padding:14px;
+border:0;
+border-radius:10px;
+background:#8b6f47;
+color:white;
+font-size:16px;
+font-weight:bold;
+">
++ Buat Link Tamu
+</button>
+
+<div id="hasilTamu" style="margin-top:20px;"></div>
+
+<button onclick="tutupAdmin()" style="
+width:100%;
+margin-top:15px;
+padding:12px;
+border:1px solid #ccc;
+border-radius:10px;
+background:white;
+">
+Tutup
+</button>
+
+</div>
+</div>
+
 <script>
-document.addEventListener("DOMContentLoaded", function () {
-  const params = new URLSearchParams(window.location.search);
+function bukaAdmin() {
+    document.getElementById("adminPanel").style.display = "block";
+}
 
-  if (params.get("admin") === "1") {
-    const tombol = document.createElement("a");
+function tutupAdmin() {
+    document.getElementById("adminPanel").style.display = "none";
+}
 
-    tombol.href = "https://docs.google.com/spreadsheets/d/1pDiuz23DfZtbnsQeTowfrGI4xSOg5XKkmTkLZBOitIE/edit?gid=0#gid=0";
-    tombol.target = "_blank";
-    tombol.innerHTML = "🔐 Kelola Tamu";
+function buatLinkTamu() {
 
-    tombol.style.cssText = `
-      position:fixed;
-      bottom:20px;
-      right:20px;
-      z-index:9999;
-      background:#8b6f47;
-      color:white;
-      padding:12px 18px;
-      border-radius:25px;
-      text-decoration:none;
-      font-family:Arial,sans-serif;
-      font-size:14px;
-      box-shadow:0 4px 12px rgba(0,0,0,.25);
+    const nama = document.getElementById("namaInput").value.trim();
+    const wa = document.getElementById("waInput").value.trim();
+
+    if (!nama) {
+        alert("Masukkan nama tamu terlebih dahulu.");
+        return;
+    }
+
+    if (!wa) {
+        alert("Masukkan nomor WhatsApp.");
+        return;
+    }
+
+    const nomor = wa
+        .replace(/\D/g, "")
+        .replace(/^0/, "62");
+
+    const link =
+        window.location.origin +
+        window.location.pathname +
+        "?to=" +
+        encodeURIComponent(nama);
+
+    const pesan =
+        "Assalamu'alaikum, kami mengundang Bapak/Ibu/Saudara/i " +
+        nama +
+        " untuk hadir di acara pernikahan Yuna & Qosim. " +
+        "Silakan buka undangan melalui link berikut:\n\n" +
+        link;
+
+    const waLink =
+        "https://wa.me/" +
+        nomor +
+        "?text=" +
+        encodeURIComponent(pesan);
+
+    document.getElementById("hasilTamu").innerHTML = `
+        <div style="
+        background:#f8f5ef;
+        padding:15px;
+        border-radius:12px;
+        margin-top:10px;
+        ">
+
+        <b>Nama Tamu:</b><br>
+        ${nama}
+
+        <br><br>
+
+        <b>Link Undangan:</b><br>
+
+        <input
+        value="${link}"
+        readonly
+        onclick="this.select()"
+        style="
+        width:100%;
+        box-sizing:border-box;
+        padding:10px;
+        margin-top:5px;
+        border:1px solid #ddd;
+        border-radius:8px;
+        ">
+
+        <button
+        onclick="navigator.clipboard.writeText('${link}')"
+        style="
+        width:100%;
+        margin-top:8px;
+        padding:11px;
+        border:0;
+        border-radius:8px;
+        background:#555;
+        color:white;
+        ">
+        📋 Salin Link
+        </button>
+
+        <a
+        href="${waLink}"
+        target="_blank"
+        style="
+        display:block;
+        text-align:center;
+        margin-top:8px;
+        padding:12px;
+        border-radius:8px;
+        background:#25D366;
+        color:white;
+        text-decoration:none;
+        font-weight:bold;
+        ">
+        💬 Kirim ke WhatsApp
+        </a>
+
+        </div>
     `;
+}
 
-    document.body.appendChild(tombol);
-  }
+document.addEventListener("DOMContentLoaded", function() {
+
+    const params = new URLSearchParams(window.location.search);
+
+    if (params.get("admin") === "1") {
+
+        const tombol = document.createElement("button");
+
+        tombol.innerHTML = "⚙️ Kelola Tamu";
+
+        tombol.onclick = bukaAdmin;
+
+        tombol.style.cssText = `
+        position:fixed;
+        bottom:20px;
+        right:20px;
+        z-index:9998;
+        background:#8b6f47;
+        color:white;
+        border:none;
+        border-radius:25px;
+        padding:12px 18px;
+        font-size:14px;
+        font-weight:bold;
+        box-shadow:0 4px 15px rgba(0,0,0,.25);
+        `;
+
+        document.body.appendChild(tombol);
+    }
+
 });
 </script>
 </body>
