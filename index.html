@@ -191,5 +191,14 @@ function waPlaceholder(){
   window.open('https://wa.me/'+WA_NUMBER+'?text='+encodeURIComponent(msg),'_blank');
 }
 </script>
-</body>
+<audio id="musik" loop>
+  <source src="WhatsApp Audio 2026-10-08 at 13.22.47.mpeg" type="audio/mpeg">
+</audio>
+
+<script>
+document.addEventListener("click", function() {
+  const musik = document.getElementById("musik");
+  musik.play().catch(() => {});
+}, { once: true });
+</script></body>
 </html>
