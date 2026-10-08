@@ -200,13 +200,17 @@ document.addEventListener("click", function() {
   const musik = document.getElementById("musik");
   musik.play().catch(() => {});
 }, { once: true });
-</script><script>
+</script>
+
+<script>
 const params = new URLSearchParams(window.location.search);
-const namaTamu = params.get("to");
+const namaTamu = params.get('to');
 
 if (namaTamu) {
-  document.getElementById("guestCover").textContent =
-    decodeURIComponent(namaTamu.replace(/\+/g, " "));
+    document.getElementById('guestCover').textContent =
+        namaTamu.replace(/\+/g, ' ');
 }
-</script></body>
+</script>
+
+</body>
 </html>
