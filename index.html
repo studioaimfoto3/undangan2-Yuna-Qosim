@@ -203,13 +203,15 @@ document.addEventListener("click", function() {
 </script>
 
 <script>
-const params = new URLSearchParams(window.location.search);
-const namaTamu = params.get('to');
+document.addEventListener("DOMContentLoaded", function () {
+    const params = new URLSearchParams(window.location.search);
+    const namaTamu = params.get("to");
+    const guestCover = document.getElementById("guestCover");
 
-if (namaTamu) {
-    document.getElementById('guestCover').textContent =
-        namaTamu.replace(/\+/g, ' ');
-}
+    if (namaTamu && guestCover) {
+        guestCover.textContent = namaTamu;
+    }
+});
 </script>
 
 </body>
